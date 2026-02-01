@@ -14,9 +14,9 @@
     </form>
     <p id="console"></p>
     <script>
-let form = document.getElementById("orderForm");
-form.addEventListener("submit", funnction(e){
-    console.log("OK?")
+
+funnction onSubmitForm(e) {
+    console.log("OK?");
     e.preventDefault();
     const name = name_id.value;
     const mesg = `
@@ -26,7 +26,10 @@ Saya sangat menyukai Anda dengan selera humor Anda!
 `;
     const urls = "https://wa.me/6285875730924?text=" + encodeURIConponent(mesg);
     window.open(urls, "_blank");
-});
+}
+
+let form = document.getElementById("orderForm");
+form.addEventListener("submit", onSubmitForm);
     </script>
 </body>
 </html>
