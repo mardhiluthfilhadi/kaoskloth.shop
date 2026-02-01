@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>KaosKloth</title>
+<meta name="viewport" content="width=device,initial-scale=1">
+</head>
+<body>
+    <h1>KaosKloth Order</h1>
+    <p>Order KaosKloth via WhatsApp</p>
+    <form id="orderForm">
+    <input type="text" id="name_id"><br/><br/>
+    <button type="submit">Buat Pesanan</button>
+    </form>
+    <p id="console"></p>
+    <script>
+let form = document.getElementById("orderForm");
+form.addEventListener("submit", funnction(e) {
+    e.preventDefault();
+    const name = name_id.value;
+    const mesg = `
+Pesanan!
+Nama: ${name}
+Saya sangat menyukai Anda dengan selera humor Anda!
+`;
+    const urls = "https://wa.me/6285875730924?text=" + encodeURIConponent(mesg);
+    window.open(urls, "_blank");
+})
+    </script>
+</body>
+</html>
