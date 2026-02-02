@@ -73,7 +73,7 @@ async function loadProvinsi() {
             provinsiSelect.appendChild(option);
         });
     } else {
-        document.getElementById("console_tag").innerText = "Error: Gagal memuat data provinsi";
+        showErrorAndScroll("Gagal memuat data provinsi. Silakan refresh halaman.", "provinsi_tag");
     }
 }
 
@@ -87,7 +87,7 @@ async function loadKabupaten(provId) {
         if (data) {
             cachedData.kabupaten[provId] = data;
         } else {
-            document.getElementById("console_tag").innerText = "Error: Gagal memuat data kabupaten/kota";
+            showErrorAndScroll("Gagal memuat data kabupaten/kota. Silakan coba lagi.", "kabkota_tag");
             return;
         }
     }
@@ -118,7 +118,7 @@ async function loadKecamatan(provId, kabId) {
         if (data) {
             cachedData.kecamatan[key] = data;
         } else {
-            document.getElementById("console_tag").innerText = "Error: Gagal memuat data kecamatan";
+            showErrorAndScroll("Gagal memuat data kecamatan. Silakan coba lagi.", "kecamatan_tag");
             return;
         }
     }
@@ -149,7 +149,7 @@ async function loadDesa(provId, kabId, kecId) {
         if (data) {
             cachedData.desa[key] = data;
         } else {
-            document.getElementById("console_tag").innerText = "Error: Gagal memuat data desa/kelurahan";
+            showErrorAndScroll("Gagal memuat data desa/kelurahan. Silakan coba lagi.", "desa_tag");
             return;
         }
     }
@@ -221,6 +221,31 @@ function capitalize(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+// Fungsi untuk menampilkan error pop-up dan scroll ke elemen
+function showErrorAndScroll(message, elementId = null) {
+    // Tampilkan alert
+    alert(message);
+    
+    // Scroll ke elemen jika ada
+    if (elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+            
+            // Tambahkan efek highlight sementara
+            element.style.transition = 'all 0.3s';
+            element.style.border = '2px solid #e74c3c';
+            element.style.boxShadow = '0 0 10px rgba(231, 76, 60, 0.5)';
+            
+            setTimeout(() => {
+                element.style.border = '';
+                element.style.boxShadow = '';
+            }, 2000);
+        }
+    }
+}
+
 // Fungsi untuk menampilkan keranjang
 function renderCart() {
     const cartSection = document.getElementById('cartSection');
@@ -256,8 +281,23 @@ function addToCart(e) {
     const jenisKaos = document.querySelector('input[name="jenis_kaos"]:checked');
     const ilustrasi = document.querySelector('input[name="ilustrasi"]:checked');
     
-    if (!jenisKaos || !ilustrasi) {
-        document.getElementById("console_tag").innerText = "Error: Pilih jenis kaos dan ilustrasi terlebih dahulu!";
+    if (!jenisKaos) {
+        showErrorAndScroll("Pilih jenis kaos terlebih dahulu!", "orderForm");
+        // Scroll ke bagian jenis kaos
+        const firstKaosRadio = document.querySelector('input[name="jenis_kaos"]');
+        if (firstKaosRadio) {
+            firstKaosRadio.closest('.form-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+    }
+    
+    if (!ilustrasi) {
+        showErrorAndScroll("Pilih ilustrasi terlebih dahulu!", "orderForm");
+        // Scroll ke bagian ilustrasi
+        const firstIlustrasiRadio = document.querySelector('input[name="ilustrasi"]');
+        if (firstIlustrasiRadio) {
+            firstIlustrasiRadio.closest('.form-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
     }
     
@@ -296,35 +336,69 @@ function onSubmitForm(e) {
     const alamatLengkap = document.getElementById("alamat_lengkap_tag").value.trim();
     const kodepos = document.getElementById("kodepos_tag").value.trim();
 
-    // Validasi
-    if (!nama || !provinsi || !kabkota || !kecamatan || !desa || !alamatLengkap) {
-        submission_valid = false;
-        document.getElementById("console_tag").innerText = "Error: Mohon lengkapi semua field yang wajib diisi!";
+    // Validasi nama
+    if (!nama) {
+        showErrorAndScroll("Mohon isi nama lengkap Anda!", "nama_tag");
         return;
     }
 
+    // Validasi provinsi
+    if (!provinsi) {
+        showErrorAndScroll("Mohon pilih provinsi!", "provinsi_tag");
+        return;
+    }
+
+    // Validasi kabupaten/kota
+    if (!kabkota) {
+        showErrorAndScroll("Mohon pilih kabupaten/kota!", "kabkota_tag");
+        return;
+    }
+
+    // Validasi kecamatan
+    if (!kecamatan) {
+        showErrorAndScroll("Mohon pilih kecamatan!", "kecamatan_tag");
+        return;
+    }
+
+    // Validasi desa
+    if (!desa) {
+        showErrorAndScroll("Mohon pilih desa/kelurahan!", "desa_tag");
+        return;
+    }
+
+    // Validasi alamat lengkap
+    if (!alamatLengkap) {
+        showErrorAndScroll("Mohon isi alamat lengkap (nama jalan, nomor rumah, RT/RW)!", "alamat_lengkap_tag");
+        return;
+    }
+
+    // Validasi keranjang
     if (cart.length === 0) {
-        submission_valid = false;
-        document.getElementById("console_tag").innerText = "Error: Keranjang masih kosong! Tambahkan produk terlebih dahulu.";
+        showErrorAndScroll("Keranjang masih kosong! Tambahkan produk terlebih dahulu.", "orderForm");
+        // Scroll ke bagian jenis kaos
+        const firstKaosRadio = document.querySelector('input[name="jenis_kaos"]');
+        if (firstKaosRadio) {
+            firstKaosRadio.closest('.form-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
     }
 
-    if (submission_valid) {
-        const provinsiNama = provinsiSelect.options[provinsiSelect.selectedIndex].text;
-        const kabkotaNama = kabkotaSelect.options[kabkotaSelect.selectedIndex].text;
-        const kecamatanNama = kecamatanSelect.options[kecamatanSelect.selectedIndex].text;
-        const desaNama = desaSelect.options[desaSelect.selectedIndex].text;
-        
-        const alamatFull = 
-            `${capitalize(alamatLengkap)}, DESA/KEL. ${desaNama}, KEC. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
-        
-        // Format daftar produk
-        let productList = '';
-        cart.forEach((item, index) => {
-            productList += `${index + 1}. Jenis Kaos: ${capitalize(item.jenisKaos)} - Ilustrasi: ${capitalize(item.ilustrasi)}\n`;
-        });
-        
-        const mesg = 
+    // Jika semua validasi lolos
+    const provinsiNama = provinsiSelect.options[provinsiSelect.selectedIndex].text;
+    const kabkotaNama = kabkotaSelect.options[kabkotaSelect.selectedIndex].text;
+    const kecamatanNama = kecamatanSelect.options[kecamatanSelect.selectedIndex].text;
+    const desaNama = desaSelect.options[desaSelect.selectedIndex].text;
+    
+    const alamatFull = 
+        `${capitalize(alamatLengkap)}, DESA/KEL. ${desaNama}, KEC. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
+    
+    // Format daftar produk
+    let productList = '';
+    cart.forEach((item, index) => {
+        productList += `${index + 1}. Jenis Kaos: ${capitalize(item.jenisKaos)} - Ilustrasi: ${capitalize(item.ilustrasi)}\n`;
+    });
+    
+    const mesg = 
 `*PESANAN KAOSKLOTH*
 
 *Nama:* ${nama}
@@ -338,10 +412,9 @@ ${alamatFull}
 
 Terima kasih!`;
 
-        document.getElementById("console_tag").innerText = "";
-        const urls = "https://wa.me/6285875730924?text=" + encodeURIComponent(mesg);
-        window.open(urls, "_blank");
-    }
+    document.getElementById("console_tag").innerText = "";
+    const urls = "https://wa.me/6285875730924?text=" + encodeURIComponent(mesg);
+    window.open(urls, "_self");
 }
 
 let form = document.getElementById("orderForm");
