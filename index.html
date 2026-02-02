@@ -6,29 +6,124 @@
 <meta name="viewport" content="width=device,initial-scale=1">
 </head>
 <body>
-    <h1>KaosKloth Order</h1>
-    <p>Order KaosKloth via WhatsApp</p>
-    <form id="orderForm">
-    <input type="text" id="name_id"><br/><br/>
-    <button type="submit">Buat Pesanan</button>
-    </form>
-    <p id="console"></p>
-    <script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pesanan KaosKloth</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            color: #666;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #20BA5A;
+        }
+        .error {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .required {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KaosKloth</h1>
+        <p>Order KaosKloth via WhatsApp</p>
+        
+        <form id="orderForm">
+            <label for="nama_tag">Nama Lengkap <span class="required">*</span></label>
+            <input type="text" id="nama_tag" placeholder="Masukkan nama lengkap Anda">
 
-function onSubmitForm(e) {
-    e.preventDefault();
-    const name = name_id.value;
-    const mesg = `
-Pesanan!
-Nama: ${name}
-Saya sangat menyukai Anda dengan selera humor Anda!
-`;
-    const urls = "https://wa.me/6285875730924?text=" + encodeURIComponent(mesg);
-    window.open(urls, "_blank");
-}
+            <label for="provinsi_tag">Provinsi <span class="required">*</span></label>
+            <select id="provinsi_tag">
+                <option value="">-- Pilih Provinsi --</option>
+            </select>
 
-let form = document.getElementById("orderForm");
-form.addEventListener("submit", onSubmitForm);
-    </script>
+            <label for="kabkota_tag">Kabupaten/Kota <span class="required">*</span></label>
+            <select id="kabkota_tag" disabled>
+                <option value="">-- Pilih Kabupaten/Kota --</option>
+            </select>
+
+            <label for="kecamatan_tag">Kecamatan <span class="required">*</span></label>
+            <select id="kecamatan_tag" disabled>
+                <option value="">-- Pilih Kecamatan --</option>
+            </select>
+
+            <label for="desa_tag">Desa/Kelurahan <span class="required">*</span></label>
+            <select id="desa_tag" disabled>
+                <option value="">-- Pilih Desa/Kelurahan --</option>
+            </select>
+
+            <label for="alamat_lengkap_tag">Alamat Lengkap (Jalan, RT/RW, No. Rumah) <span class="required">*</span></label>
+            <textarea id="alamat_lengkap_tag" placeholder="Contoh: Jl. Merdeka No. 123, RT 02/RW 05"></textarea>
+
+            <label for="kodepos_tag">Kode Pos</label>
+            <input type="text" id="kodepos_tag" placeholder="Contoh: 12345">
+
+            <button type="submit">Buat Pesanan via WhatsApp</button>
+        </form>
+        
+        <p id="console_tag" class="error"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 </body>
 </html>
