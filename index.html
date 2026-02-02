@@ -381,6 +381,9 @@
             border-color: #764ba2;
             background: #252538;
             box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.2);
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
         }
 
         body.dark-mode input[type="text"]:hover,
@@ -389,13 +392,22 @@
             border-color: #4a4a62;
         }
 
+        body.dark-mode select:hover:not(:disabled) {
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
         body.dark-mode select:disabled {
             background: #1a1a28;
             opacity: 0.5;
         }
 
         body.dark-mode select {
+            background-color: #1e1e2e;
             background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
         }
 
         body.dark-mode .subtitle {
@@ -525,41 +537,5 @@
     </footer>
 
     <script src="script.js"></script>
-    <script>
-        // Dark/Light Mode Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const lightBtn = document.getElementById('lightBtn');
-        const darkBtn = document.getElementById('darkBtn');
-        const body = document.body;
-
-        // Check for saved theme preference or default to 'light'
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        
-        // Apply saved theme on page load
-        if (currentTheme === 'dark') {
-            body.classList.add('dark-mode');
-            lightBtn.classList.remove('active');
-            darkBtn.classList.add('active');
-        }
-
-        // Light mode click
-        lightBtn.addEventListener('click', () => {
-            body.classList.remove('dark-mode');
-            lightBtn.classList.add('active');
-            darkBtn.classList.remove('active');
-            localStorage.setItem('theme', 'light');
-        });
-
-        // Dark mode click
-        darkBtn.addEventListener('click', () => {
-            body.classList.add('dark-mode');
-            lightBtn.classList.remove('active');
-            darkBtn.classList.add('active');
-            localStorage.setItem('theme', 'dark');
-        });
-
-        // Update year automatically
-        document.querySelector('.footer-year').textContent = new Date().getFullYear();
-    </script>
 </body>
 </html>

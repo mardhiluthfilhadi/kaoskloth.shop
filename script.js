@@ -1,3 +1,38 @@
+// Dark/Light Mode Toggle
+const themeToggle = document.getElementById('themeToggle');
+const lightBtn = document.getElementById('lightBtn');
+const darkBtn = document.getElementById('darkBtn');
+const body = document.body;
+
+// Check for saved theme preference or default to 'light'
+const currentTheme = localStorage.getItem('theme') || 'dark';
+
+// Apply saved theme on page load
+if (currentTheme === 'dark') {
+    body.classList.add('dark-mode');
+    lightBtn.classList.remove('active');
+    darkBtn.classList.add('active');
+}
+
+// Light mode click
+lightBtn.addEventListener('click', () => {
+    body.classList.remove('dark-mode');
+    lightBtn.classList.add('active');
+    darkBtn.classList.remove('active');
+    localStorage.setItem('theme', 'light');
+});
+
+// Dark mode click
+darkBtn.addEventListener('click', () => {
+    body.classList.add('dark-mode');
+    lightBtn.classList.remove('active');
+    darkBtn.classList.add('active');
+    localStorage.setItem('theme', 'dark');
+});
+
+// Update year automatically
+document.querySelector('.footer-year').textContent = new Date().getFullYear();
+
 const provinsiSelect = document.getElementById("provinsi_tag");
 const kabkotaSelect = document.getElementById("kabkota_tag");
 const kecamatanSelect = document.getElementById("kecamatan_tag");
@@ -28,6 +63,7 @@ async function fetchJSON(path) {
 // Load provinsi saat halaman dimuat
 async function loadProvinsi() {
     const data = await fetchJSON('provinsi/provinsi.json');
+    console.log("OK?", data != undefined)
     if (data) {
         cachedData.provinsi = data;
         // Sort berdasarkan nama
@@ -233,44 +269,3 @@ Terima kasih!`;
 let form = document.getElementById("orderForm");
 form.addEventListener("submit", onSubmitForm);
 
-function onSubmitForm(e) {
-    e.preventDefault();
-    let submission_valid = true;
-    
-    const nama = document.getElementById("nama_tag").value.trim();
-    const provinsi = provinsiSelect.value;
-    const kabkota = kabkotaSelect.value;
-    const kecamatan = kecamatanSelect.value;
-    const desa = desaSelect.value;
-    const alamatLengkap = document.getElementById("alamat_lengkap_tag").value.trim();
-    const kodepos = document.getElementById("kodepos_tag").value.trim();
-
-    // Validasi
-    if (!nama || !telepon || !provinsi || !kabkota || !kecamatan || !desa || !alamatLengkap) {
-        submission_valid = false;
-    }
-
-    if (submission_valid) {
-        const alamatFull = 
-`${alamatLengkap}, Desa/Kel. ${desa}, Kec. ${kecamatan}, ${kabkota}, ${provinsi}${kodepos ? ', ' + kodepos : ''}`;
-        
-        const mesg = 
-`*PESANAN KAOSKLOTH*
-
-*Nama:* ${nama}
-
-*Alamat Lengkap:*
-${alamatFull}
-
-Terima kasih!`;
-
-        document.getElementById("console_tag").innerText = "";
-        const urls = "https://wa.me/6285875730924?text=" + encodeURIComponent(mesg);
-        window.open(urls, "_blank");
-    } else {
-        document.getElementById("console_tag").innerText = "Error: Mohon lengkapi semua field yang wajib diisi!";
-    }
-}
-
-let form = document.getElementById("orderForm");
-form.addEventListener("submit", onSubmitForm);
