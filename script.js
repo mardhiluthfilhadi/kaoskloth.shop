@@ -1,20 +1,16 @@
-// Dark/Light Mode Toggle
 const themeToggle = document.getElementById('themeToggle');
 const lightBtn = document.getElementById('lightBtn');
 const darkBtn = document.getElementById('darkBtn');
 const body = document.body;
 
-// Check for saved theme preference or default to 'light'
-const currentTheme = localStorage.getItem('theme') || 'dark';
+const currentTheme = localStorage.getItem('theme') || 'light';
 
-// Apply saved theme on page load
 if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
     lightBtn.classList.remove('active');
     darkBtn.classList.add('active');
 }
 
-// Light mode click
 lightBtn.addEventListener('click', () => {
     body.classList.remove('dark-mode');
     lightBtn.classList.add('active');
@@ -22,7 +18,6 @@ lightBtn.addEventListener('click', () => {
     localStorage.setItem('theme', 'light');
 });
 
-// Dark mode click
 darkBtn.addEventListener('click', () => {
     body.classList.add('dark-mode');
     lightBtn.classList.remove('active');
@@ -30,7 +25,6 @@ darkBtn.addEventListener('click', () => {
     localStorage.setItem('theme', 'dark');
 });
 
-// Update year automatically
 document.querySelector('.footer-year').textContent = new Date().getFullYear();
 
 const provinsiSelect = document.getElementById("provinsi_tag");
@@ -249,7 +243,7 @@ function renderCart() {
                 <div class="cart-item-details">Jenis kaos: ${capitalize(item.jenisKaos)} | Ilustrasi: ${capitalize(item.ilustrasi)}</div>
             </div>
             <br/>
-            <button type="button" class="cart-item-remove" onclick="removeFromCart(${index})">Hapus</button>
+            <button type="button" class="cart-item-remove" onclick="removeFromCart(${index})">X</button>
         `;
         cartItems.appendChild(cartItem);
     });
@@ -316,19 +310,18 @@ function onSubmitForm(e) {
     }
 
     if (submission_valid) {
-        // Ambil nama lengkap (bukan ID) dari dropdown
         const provinsiNama = provinsiSelect.options[provinsiSelect.selectedIndex].text;
         const kabkotaNama = kabkotaSelect.options[kabkotaSelect.selectedIndex].text;
         const kecamatanNama = kecamatanSelect.options[kecamatanSelect.selectedIndex].text;
         const desaNama = desaSelect.options[desaSelect.selectedIndex].text;
         
         const alamatFull = 
-`${alamatLengkap}, Desa/Kel. ${desaNama}, Kec. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
+            `${capitalize(alamatLengkap)}, DESA/KEL. ${desaNama}, KEC. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
         
         // Format daftar produk
         let productList = '';
         cart.forEach((item, index) => {
-            productList += `${index + 1}. Jenis: ${capitalize(item.jenisKaos)} - Ilustrasi: ${capitalize(item.ilustrasi)}\n`;
+            productList += `${index + 1}. Jenis Kaos: ${capitalize(item.jenisKaos)} - Ilustrasi: ${capitalize(item.ilustrasi)}\n`;
         });
         
         const mesg = 
