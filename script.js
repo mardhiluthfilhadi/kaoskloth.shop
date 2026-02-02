@@ -46,6 +46,9 @@ const cachedData = {
     desa: {}
 };
 
+// Keranjang belanja
+let cart = [];
+
 // Fungsi untuk fetch JSON file
 async function fetchJSON(path) {
     try {
@@ -63,7 +66,6 @@ async function fetchJSON(path) {
 // Load provinsi saat halaman dimuat
 async function loadProvinsi() {
     const data = await fetchJSON('provinsi/provinsi.json');
-    console.log("OK?", data != undefined)
     if (data) {
         cachedData.provinsi = data;
         // Sort berdasarkan nama
@@ -220,6 +222,73 @@ kecamatanSelect.addEventListener("change", async function() {
 // Load provinsi saat halaman dimuat
 loadProvinsi();
 
+// Fungsi untuk capitalize text
+function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+// Fungsi untuk menampilkan keranjang
+function renderCart() {
+    const cartSection = document.getElementById('cartSection');
+    const cartItems = document.getElementById('cartItems');
+    
+    if (cart.length === 0) {
+        cartSection.style.display = 'none';
+        return;
+    }
+    
+    cartSection.style.display = 'block';
+    cartItems.innerHTML = '';
+    
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+            <div class="cart-item-info">
+                <div class="cart-item-title">#${index + 1}</div>
+                <div class="cart-item-details">Jenis kaos: ${capitalize(item.jenisKaos)} | Ilustrasi: ${capitalize(item.ilustrasi)}</div>
+            </div>
+            <br/>
+            <button type="button" class="cart-item-remove" onclick="removeFromCart(${index})">Hapus</button>
+        `;
+        cartItems.appendChild(cartItem);
+    });
+}
+
+// Fungsi untuk menambah ke keranjang
+function addToCart(e) {
+    e.preventDefault();
+
+    const jenisKaos = document.querySelector('input[name="jenis_kaos"]:checked');
+    const ilustrasi = document.querySelector('input[name="ilustrasi"]:checked');
+    
+    if (!jenisKaos || !ilustrasi) {
+        document.getElementById("console_tag").innerText = "Error: Pilih jenis kaos dan ilustrasi terlebih dahulu!";
+        return;
+    }
+    
+    cart.push({
+        jenisKaos: jenisKaos.value,
+        ilustrasi: ilustrasi.value
+    });
+    
+    // Reset pilihan
+    document.querySelectorAll('input[name="jenis_kaos"]').forEach(input => input.checked = false);
+    document.querySelectorAll('input[name="ilustrasi"]').forEach(input => input.checked = false);
+    
+    document.getElementById("console_tag").innerText = "";
+    renderCart();
+}
+
+// Fungsi untuk menghapus dari keranjang
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCart();
+}
+
+// Event listener untuk tombol tambah ke keranjang
+document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+
 // Fungsi submit form
 function onSubmitForm(e) {
     e.preventDefault();
@@ -236,6 +305,14 @@ function onSubmitForm(e) {
     // Validasi
     if (!nama || !provinsi || !kabkota || !kecamatan || !desa || !alamatLengkap) {
         submission_valid = false;
+        document.getElementById("console_tag").innerText = "Error: Mohon lengkapi semua field yang wajib diisi!";
+        return;
+    }
+
+    if (cart.length === 0) {
+        submission_valid = false;
+        document.getElementById("console_tag").innerText = "Error: Keranjang masih kosong! Tambahkan produk terlebih dahulu.";
+        return;
     }
 
     if (submission_valid) {
@@ -248,10 +325,20 @@ function onSubmitForm(e) {
         const alamatFull = 
 `${alamatLengkap}, Desa/Kel. ${desaNama}, Kec. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
         
+        // Format daftar produk
+        let productList = '';
+        cart.forEach((item, index) => {
+            productList += `${index + 1}. Jenis: ${capitalize(item.jenisKaos)} - Ilustrasi: ${capitalize(item.ilustrasi)}\n`;
+        });
+        
         const mesg = 
 `*PESANAN KAOSKLOTH*
 
 *Nama:* ${nama}
+
+*Daftar Produk:*
+${productList}
+*Total Item:* ${cart.length}
 
 *Alamat Lengkap:*
 ${alamatFull}
@@ -261,11 +348,8 @@ Terima kasih!`;
         document.getElementById("console_tag").innerText = "";
         const urls = "https://wa.me/6285875730924?text=" + encodeURIComponent(mesg);
         window.open(urls, "_blank");
-    } else {
-        document.getElementById("console_tag").innerText = "Error: Mohon lengkapi semua field yang wajib diisi!";
     }
 }
 
 let form = document.getElementById("orderForm");
 form.addEventListener("submit", onSubmitForm);
-

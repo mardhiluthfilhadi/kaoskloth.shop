@@ -118,6 +118,55 @@
             margin-top: 0;
         }
 
+        .checkbox-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-item input {
+            display: none;
+        }
+
+        .checkbox-item label {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #fafafa;
+            border-radius: 12px;
+            border: 4px solid transparent;
+            cursor: pointer;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .img-wrap {
+            flex: 1;                     /* ikut image tertinggi */
+            display: flex;
+            align-items: center;         /* vertical center */
+            justify-content: center;     /* horizontal center */
+            padding: 10px;
+        }
+
+        .img-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .checkbox-item span {
+            padding: 8px;
+            text-align: center;
+            background: #000;
+            font-size: 14px;
+        }
+
+        .checkbox-item input:checked + label {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79,70,229,.3);
+        }
+
         .required {
             color: #e74c3c;
             margin-left: 2px;
@@ -195,6 +244,91 @@
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
             position: relative;
             overflow: hidden;
+        }
+
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 20px;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .cart-items {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cart-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .cart-item:hover {
+            border-color: #dee2e6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-details {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .cart-item-remove {
+            background: #dc3545;
+            width: 20%;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cart-item-remove:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        body.dark-mode .cart-item {
+            background: #2a2a3e;
+            border-color: #3a3a52;
+        }
+
+        body.dark-mode .cart-item:hover {
+            border-color: #4a4a62;
+        }
+
+        body.dark-mode .cart-item-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .cart-item-details {
+            color: #b0b0b0;
         }
 
         button::before {
@@ -497,6 +631,90 @@
         
         <div class="form-container">
             <form id="orderForm">
+
+                <label>Jenis Kaos <span class="required">*</span></label>
+                <div class="checkbox-list">
+
+                    <div class="checkbox-item">
+                        <input type="radio" id="a1" name="jenis_kaos" value="Lengan Panjang">
+                        <label for="a1">
+                            <div class="img-wrap">
+                                <img src="produk/template.jpg">
+                            </div>
+                            <span>Lengan Panjang</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="radio" id="a2" name="jenis_kaos" value="Lengan Pendek">
+                        <label for="a2">
+                            <div class="img-wrap">
+                                <img src="produk/template.jpg">
+                            </div>
+                            <span>Lengan Pendek</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="radio" id="a3" name="jenis_kaos" value="Kerah Biasa">
+                        <label for="a3">
+                            <div class="img-wrap">
+                                <img src="produk/template.jpg">
+                            </div>
+                            <span>Kerah Biasa</span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <label>Ilustrasi <span class="required">*</span></label>
+                <div class="checkbox-list">
+
+                    <div class="checkbox-item">
+                        <input type="radio" id="b1" name="ilustrasi" value="serigala">
+                        <label for="b1">
+                            <div class="img-wrap">
+                                <img src="produk/template.jpg">
+                            </div>
+                            <span>Serigala</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="radio" id="b2" name="ilustrasi" value="rusa">
+                        <label for="b2">
+                            <div class="img-wrap">
+                                <img src="produk/template.jpg">
+                            </div>
+                            <span>Rusa</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="radio" id="b3" name="ilustrasi" value="elang">
+                        <label for="b3">
+                            <div class="img-wrap">
+                                <img src="produk/template.jpg">
+                            </div>
+                            <span>Elang</span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <button type="button" id="addToCartBtn" class="add-to-cart-btn">+ Tambah ke Keranjang</button>
+
+                <!-- Keranjang Section -->
+                <br/>
+                <br/>
+                <br/>
+                <div id="cartSection" style="display: none;">
+                    <h3 style="text-align: center; color: #fff;">Keranjang Belanja</h3>
+                    <div id="cartItems" class="cart-items"></div>
+                </div>
+
+                <br/>
+
                 <label for="nama_tag">Nama Lengkap <span class="required">*</span></label>
                 <input type="text" id="nama_tag" placeholder="Masukkan nama lengkap Anda" autocomplete="name">
 
