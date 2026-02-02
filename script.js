@@ -30,7 +30,10 @@ async function loadProvinsi() {
     const data = await fetchJSON('provinsi/provinsi.json');
     if (data) {
         cachedData.provinsi = data;
-        Object.entries(data).forEach(([id, nama]) => {
+        // Sort berdasarkan nama
+        const sortedEntries = Object.entries(data).sort((a, b) => a[1].localeCompare(b[1]));
+        
+        sortedEntries.forEach(([id, nama]) => {
             const option = document.createElement("option");
             option.value = id;
             option.textContent = nama;
@@ -58,7 +61,10 @@ async function loadKabupaten(provId) {
     }
     
     kabkotaSelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
-    Object.entries(cachedData.kabupaten[provId]).forEach(([id, nama]) => {
+    // Sort berdasarkan nama
+    const sortedEntries = Object.entries(cachedData.kabupaten[provId]).sort((a, b) => a[1].localeCompare(b[1]));
+    
+    sortedEntries.forEach(([id, nama]) => {
         const option = document.createElement("option");
         option.value = id;
         option.textContent = nama;
@@ -86,7 +92,10 @@ async function loadKecamatan(provId, kabId) {
     }
     
     kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-    Object.entries(cachedData.kecamatan[key]).forEach(([id, nama]) => {
+    // Sort berdasarkan nama
+    const sortedEntries = Object.entries(cachedData.kecamatan[key]).sort((a, b) => a[1].localeCompare(b[1]));
+    
+    sortedEntries.forEach(([id, nama]) => {
         const option = document.createElement("option");
         option.value = id;
         option.textContent = nama;
@@ -114,7 +123,10 @@ async function loadDesa(provId, kabId, kecId) {
     }
     
     desaSelect.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
-    Object.entries(cachedData.desa[key]).forEach(([id, nama]) => {
+    // Sort berdasarkan nama
+    const sortedEntries = Object.entries(cachedData.desa[key]).sort((a, b) => a[1].localeCompare(b[1]));
+    
+    sortedEntries.forEach(([id, nama]) => {
         const option = document.createElement("option");
         option.value = id;
         option.textContent = nama;
@@ -198,10 +210,10 @@ function onSubmitForm(e) {
         const desaNama = desaSelect.options[desaSelect.selectedIndex].text;
         
         const alamatFull = 
-            `${alamatLengkap}, Desa/Kel. ${desaNama}, Kec. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
+`${alamatLengkap}, Desa/Kel. ${desaNama}, Kec. ${kecamatanNama}, ${kabkotaNama}, ${provinsiNama}${kodepos ? ', ' + kodepos : ''}`;
         
         const mesg = 
-            `*PESANAN KAOSKLOTH*
+`*PESANAN KAOSKLOTH*
 
 *Nama:* ${nama}
 
@@ -221,3 +233,44 @@ Terima kasih!`;
 let form = document.getElementById("orderForm");
 form.addEventListener("submit", onSubmitForm);
 
+function onSubmitForm(e) {
+    e.preventDefault();
+    let submission_valid = true;
+    
+    const nama = document.getElementById("nama_tag").value.trim();
+    const provinsi = provinsiSelect.value;
+    const kabkota = kabkotaSelect.value;
+    const kecamatan = kecamatanSelect.value;
+    const desa = desaSelect.value;
+    const alamatLengkap = document.getElementById("alamat_lengkap_tag").value.trim();
+    const kodepos = document.getElementById("kodepos_tag").value.trim();
+
+    // Validasi
+    if (!nama || !telepon || !provinsi || !kabkota || !kecamatan || !desa || !alamatLengkap) {
+        submission_valid = false;
+    }
+
+    if (submission_valid) {
+        const alamatFull = 
+`${alamatLengkap}, Desa/Kel. ${desa}, Kec. ${kecamatan}, ${kabkota}, ${provinsi}${kodepos ? ', ' + kodepos : ''}`;
+        
+        const mesg = 
+`*PESANAN KAOSKLOTH*
+
+*Nama:* ${nama}
+
+*Alamat Lengkap:*
+${alamatFull}
+
+Terima kasih!`;
+
+        document.getElementById("console_tag").innerText = "";
+        const urls = "https://wa.me/6285875730924?text=" + encodeURIComponent(mesg);
+        window.open(urls, "_blank");
+    } else {
+        document.getElementById("console_tag").innerText = "Error: Mohon lengkapi semua field yang wajib diisi!";
+    }
+}
+
+let form = document.getElementById("orderForm");
+form.addEventListener("submit", onSubmitForm);
