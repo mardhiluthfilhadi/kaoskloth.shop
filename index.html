@@ -1,129 +1,565 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>KaosKloth</title>
-<meta name="viewport" content="width=device,initial-scale=1">
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="id">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Pesanan KaosKloth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow-x: hidden;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
         .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
+
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 50px 40px 40px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+        }
+
         h1 {
-            color: #333;
-            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            line-height: 1.1;
         }
-        p {
-            text-align: center;
+
+        .subtitle {
             color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
         label {
             display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            font-weight: 600;
             color: #333;
+            font-size: 14px;
+            letter-spacing: 0.3px;
         }
+
+        label:first-of-type {
+            margin-top: 0;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 2px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
         input[type="text"],
         select,
         textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 14px;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fafafa;
+            color: #333;
         }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #764ba2;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1);
+            transform: translateY(-2px);
+        }
+
+        input[type="text"]:hover,
+        select:hover:not(:disabled),
+        textarea:hover {
+            border-color: #c0c0c0;
+        }
+
+        select:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         textarea {
             resize: vertical;
-            min-height: 60px;
+            min-height: 80px;
+            font-size: 14px;
+            line-height: 1.6;
         }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 45px;
+        }
+
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #25D366;
+            padding: 16px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 32px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            position: relative;
+            overflow: hidden;
         }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
         button:hover {
-            background-color: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
         }
+
+        button:active {
+            transform: translateY(0);
+        }
+
         .error {
-            color: #dc3545;
+            color: #e74c3c;
             text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
+            margin-top: 16px;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            display: none;
         }
-        .required {
-            color: red;
+
+        .error.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Dark/Light Mode Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-toggle-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .theme-toggle-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .theme-toggle-btn:not(.active) {
+            color: #999;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            min-width: 300px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 12px auto;
+            border-radius: 2px;
+        }
+
+        .footer-year {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-mode::before {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: rgba(30, 30, 46, 0.95);
+            border-color: #3a3a52;
+        }
+
+        body.dark-mode .header {
+            background: rgba(30, 30, 46, 0.98);
+        }
+
+        body.dark-mode .form-container {
+            background: rgba(30, 30, 46, 0.98);
+        }
+
+        body.dark-mode label {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode select,
+        body.dark-mode textarea {
+            background: #1e1e2e;
+            border-color: #3a3a52;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode input[type="text"]:focus,
+        body.dark-mode select:focus,
+        body.dark-mode textarea:focus {
+            border-color: #764ba2;
+            background: #252538;
+            box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.2);
+        }
+
+        body.dark-mode input[type="text"]:hover,
+        body.dark-mode select:hover:not(:disabled),
+        body.dark-mode textarea:hover {
+            border-color: #4a4a62;
+        }
+
+        body.dark-mode select:disabled {
+            background: #1a1a28;
+            opacity: 0.5;
+        }
+
+        body.dark-mode select {
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+
+        body.dark-mode .subtitle {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode input::placeholder,
+        body.dark-mode textarea::placeholder {
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            .header {
+                padding: 40px 30px 30px;
+            }
+
+            .form-container {
+                padding: 30px 25px;
+            }
+
+            input[type="text"],
+            select,
+            textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 6px;
+            }
+
+            .theme-toggle-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .header {
+                padding: 30px 20px 25px;
+            }
+
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .footer-content {
+                min-width: auto;
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>KaosKloth</h1>
-        <p>Order KaosKloth via WhatsApp</p>
-        
-        <form id="orderForm">
-            <label for="nama_tag">Nama Lengkap <span class="required">*</span></label>
-            <input type="text" id="nama_tag" placeholder="Masukkan nama lengkap Anda">
-
-            <label for="provinsi_tag">Provinsi <span class="required">*</span></label>
-            <select id="provinsi_tag">
-                <option value="">-- Pilih Provinsi --</option>
-            </select>
-
-            <label for="kabkota_tag">Kabupaten/Kota <span class="required">*</span></label>
-            <select id="kabkota_tag" disabled>
-                <option value="">-- Pilih Kabupaten/Kota --</option>
-            </select>
-
-            <label for="kecamatan_tag">Kecamatan <span class="required">*</span></label>
-            <select id="kecamatan_tag" disabled>
-                <option value="">-- Pilih Kecamatan --</option>
-            </select>
-
-            <label for="desa_tag">Desa/Kelurahan <span class="required">*</span></label>
-            <select id="desa_tag" disabled>
-                <option value="">-- Pilih Desa/Kelurahan --</option>
-            </select>
-
-            <label for="alamat_lengkap_tag">Alamat Lengkap (Jalan, RT/RW, No. Rumah) <span class="required">*</span></label>
-            <textarea id="alamat_lengkap_tag" placeholder="Contoh: Jl. Merdeka No. 123, RT 02/RW 05"></textarea>
-
-            <label for="kodepos_tag">Kode Pos</label>
-            <input type="text" id="kodepos_tag" placeholder="Contoh: 12345">
-
-            <button type="submit">Buat Pesanan via WhatsApp</button>
-        </form>
-        
-        <p id="console_tag" class="error"></p>
+    <!-- Dark/Light Mode Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <div class="theme-toggle-btn active" id="lightBtn" title="Light Mode">☀️</div>
+        <div class="theme-toggle-btn" id="darkBtn" title="Dark Mode">🌙</div>
     </div>
 
+    <div class="container">
+        <div class="header">
+            <h1>KaosKloth</h1>
+            <p class="subtitle">Order KaosKloth via WhatsApp</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="orderForm">
+                <label for="nama_tag">Nama Lengkap <span class="required">*</span></label>
+                <input type="text" id="nama_tag" placeholder="Masukkan nama lengkap Anda" autocomplete="name">
+
+                <label for="provinsi_tag">Provinsi <span class="required">*</span></label>
+                <select id="provinsi_tag">
+                    <option value="">-- Pilih Provinsi --</option>
+                </select>
+
+                <label for="kabkota_tag">Kabupaten/Kota <span class="required">*</span></label>
+                <select id="kabkota_tag" disabled>
+                    <option value="">-- Pilih Kabupaten/Kota --</option>
+                </select>
+
+                <label for="kecamatan_tag">Kecamatan <span class="required">*</span></label>
+                <select id="kecamatan_tag" disabled>
+                    <option value="">-- Pilih Kecamatan --</option>
+                </select>
+
+                <label for="desa_tag">Desa/Kelurahan <span class="required">*</span></label>
+                <select id="desa_tag" disabled>
+                    <option value="">-- Pilih Desa/Kelurahan --</option>
+                </select>
+
+                <label for="alamat_lengkap_tag">Alamat Lengkap (Jalan, RT/RW, No. Rumah) <span class="required">*</span></label>
+                <textarea id="alamat_lengkap_tag" placeholder="Contoh: Jl. Merdeka No. 123, RT 02/RW 05"></textarea>
+
+                <label for="kodepos_tag">Kode Pos</label>
+                <input type="text" id="kodepos_tag" placeholder="Contoh: 12345" autocomplete="postal-code">
+
+                <button type="submit">Buat Pesanan via WhatsApp</button>
+            </form>
+            
+            <p id="console_tag" class="error"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Made with ❤️ by KaosKloth</p>
+            <div class="footer-divider"></div>
+            <p>&copy; <span class="footer-year">2025</span> KaosKloth. All Rights Reserved.</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
-</body>
-</html>
+    <script>
+        // Dark/Light Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
+        const body = document.body;
+
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Apply saved theme on page load
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            lightBtn.classList.remove('active');
+            darkBtn.classList.add('active');
+        }
+
+        // Light mode click
+        lightBtn.addEventListener('click', () => {
+            body.classList.remove('dark-mode');
+            lightBtn.classList.add('active');
+            darkBtn.classList.remove('active');
+            localStorage.setItem('theme', 'light');
+        });
+
+        // Dark mode click
+        darkBtn.addEventListener('click', () => {
+            body.classList.add('dark-mode');
+            lightBtn.classList.remove('active');
+            darkBtn.classList.add('active');
+            localStorage.setItem('theme', 'dark');
+        });
+
+        // Update year automatically
+        document.querySelector('.footer-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
